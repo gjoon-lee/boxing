@@ -4,9 +4,6 @@ import mediapipe as mp
 VIDEO_PATH = "clips/heavybag.mp4"
 OUTPUT_PATH = "annotated.mp4"
 
-mp_pose = mp.solutions.pose
-mp_drawing = mp.solutions.drawing_utils
-
 #Creating VideoCapture object
 cap = cv2.VideoCapture(VIDEO_PATH)
 
