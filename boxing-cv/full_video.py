@@ -69,6 +69,10 @@ with mp.tasks.vision.PoseLandmarker.create_from_options(options) as landmarker:
             #Draw circle around joint
             for px, py in points:
                 cv2.circle(frame, (px, py), 4, (0, 0, 255), -1)
+            
+            #Annotate frame number
+            cv2.putText(frame, str(frame_index), (20, 45),
+            cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 3)
 
         #Write every frame even if detection fails
         writer.write(frame)

@@ -43,8 +43,12 @@ merged["extension"] = (merged["dx"] ** 2 + merged["dy"] ** 2) ** 0.5
 print(merged.shape)
 print(merged.head())
 
+PUNCH_FRAMES = [36, 66, 93, 128, 216, 243, 272, 303, 394, 424, 460, 500, 509, 538]
+
 plt.figure(figsize=(14, 5))
 plt.plot(merged["frame"], merged["extension"])
+for pf in PUNCH_FRAMES:
+    plt.axvline(pf, color="red", alpha=0.4)
 plt.xlabel("frame")
-plt.ylabel("shoulder-to-wrist distance (px)")
-plt.savefig("extension.png", dpi=120)
+plt.ylabel("extension (px)")
+plt.savefig("extension_labeled.png", dpi=120)
