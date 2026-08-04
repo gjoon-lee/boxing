@@ -23,8 +23,11 @@ start = time.perf_counter()
 with mp.tasks.vision.PoseLandmarker.create_from_options(options) as landmarker:
     while True:
         ret, frame = cap.read()
+        
         if not ret:
             break
+        
+        frame = cv2.flip(frame, 1)
 
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)

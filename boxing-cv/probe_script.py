@@ -27,6 +27,9 @@ while True:
 
     if not ret:
         break
+
+    frame = cv2.flip(frame, 1)
+
     frame_count += 1
 
 cap.release()
@@ -39,6 +42,7 @@ print(f"duration: {frame_count / fps:.2f} seconds")
 cap = cv2.VideoCapture(VIDEO_PATH)
 cap.set(cv2.CAP_PROP_POS_FRAMES, 30)
 ret, frame = cap.read()
+frame = cv2.flip(frame, 1)
 if ret:
     cv2.imwrite("frame_30.png", frame)
     print(frame[0,0])

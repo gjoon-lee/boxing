@@ -45,6 +45,8 @@ with mp.tasks.vision.PoseLandmarker.create_from_options(options) as landmarker:
         ret, frame = cap.read()
         if not ret:
             break
+        frame = cv2.flip(frame, 1)
+
 
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
@@ -70,6 +72,9 @@ with mp.tasks.vision.PoseLandmarker.create_from_options(options) as landmarker:
             for px, py in points:
                 cv2.circle(frame, (px, py), 4, (0, 0, 255), -1)
             
+            cv2.circle(frame, points[15], 12, (255, 0, 0), -1)   # label of left wrist (BLUE)
+            cv2.circle(frame, points[16], 12, (0, 0, 255), -1)   # label of right wrist (RED)
+
             #Annotate frame number
             cv2.putText(frame, str(frame_index), (20, 45),
             cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 3)

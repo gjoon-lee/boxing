@@ -24,12 +24,15 @@ with open(CSV_PATH, "w", newline="") as f, \
 
     csv_writer = csv.writer(f)
     csv_writer.writerow(["frame", "timestamp_ms", "landmark_id",
-                         "x", "y", "z", "visibility", "presence"])
-
+                         "x", "y", "z", "visibility", "presence",
+                         "wx", "wy", "wz"])        # wx, wy, wz are coordinates relative to body position, i.e real-world coordinates
     while True:
         ret, frame = cap.read()
+        
         if not ret:
             break
+        
+        frame = cv2.flip(frame, 1)
 
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
@@ -37,10 +40,13 @@ with open(CSV_PATH, "w", newline="") as f, \
         result = landmarker.detect_for_video(mp_image, timestamp_ms)
 
         if result.pose_landmarks:
-            for idx, lm in enumerate(result.pose_landmarks[0]):
+            img_lms = result.pose_landmarks[0]         # Image pixel landmarks
+            world_lms = result.pose_world_landmarks[0] # World landmarks
+            for idx, (lm, wlm) in enumerate(zip(img_lms, world_lms)):
                 csv_writer.writerow([frame_index, timestamp_ms, idx,
                                      lm.x, lm.y, lm.z,
-                                     lm.visibility, lm.presence])
+                                     lm.visibility, lm.presence,
+                                     wlm.x, wlm.y, wlm.z])
                 rows_written += 1
 
         frame_index += 1
